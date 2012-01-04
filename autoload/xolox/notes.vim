@@ -893,7 +893,12 @@ endfunction
 
 function! xolox#notes#indent_list(direction, line1, line2) " {{{3
   " Change indent of list items from {line1} to {line2} using {command}.
-  let indentstr = repeat(' ', &tabstop)
+  if &expandtab
+    let indentstr = repeat(' ', &tabstop)
+  else
+    let indentstr = "\t"
+  endif
+
   if a:line1 == a:line2 && getline(a:line1) == ''
     call setline(a:line1, indentstr)
   else

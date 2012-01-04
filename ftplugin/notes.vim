@@ -15,8 +15,8 @@ setlocal autoindent
 if &ft != 'notes' | let b:undo_ftplugin = 'set autoindent<' | endif
 
 " Set &tabstop and &shiftwidth options for bulleted lists. {{{1
-setlocal tabstop=3 shiftwidth=3 expandtab
-if &ft != 'notes' | let b:undo_ftplugin .= ' | set tabstop< shiftwidth< expandtab<' | endif
+setlocal tabstop=3 shiftwidth=3 noexpandtab
+if &ft != 'notes' | let b:undo_ftplugin .= ' | set tabstop< shiftwidth< noexpandtab<' | endif
 
 " Automatic formatting for bulleted lists. {{{1
 let &l:comments = xolox#notes#get_comments_option()

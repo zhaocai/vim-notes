@@ -38,7 +38,7 @@ endf
 fun! tasknotes#toggle_done()"                                             [[[1
 
     let line = getline(".")
-    if (line =~ '^\s*- ')
+    if (line =~ '^\t*- ')
         let repl = line
         if (line =~ '@done')
             let repl = substitute(line, "@done\(.*\)", "", "g")
@@ -61,7 +61,7 @@ endf
 fun! tasknotes#toggle_cancelled()"                                        [[[1
 
     let line = getline(".")
-    if (line =~ '^\s*- ')
+    if (line =~ '^\t*- ')
         let repl = line
         if (line =~ '@cancelled')
             let repl = substitute(line, "@cancelled\(.*\)", "", "g")
