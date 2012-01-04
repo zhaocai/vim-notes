@@ -5,6 +5,13 @@ endif
 let g:loaded_taskpaper = 1
 
 "=============================================================================
+">> Settings:                                                     [[[1
+" tasknotes date format
+if !exists('g:tasknotes_date_format')
+    let g:tasknotes_date_format = "%Y-%m-%d"
+endif
+
+"=============================================================================
 ">> Public Interface:                                                     [[[1
 noremap <unique> <Plug>tasknotes_toggle_done       :call tasknotes#toggle_done()<CR>
 noremap <unique> <Plug>tasknotes_toggle_cancelled  :call tasknotes#toggle_cancelled()<CR>

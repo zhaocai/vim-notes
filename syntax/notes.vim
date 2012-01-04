@@ -156,6 +156,7 @@ highlight def link notesLastEdited LineNr
 
 runtime! syntax/tasknotes.vim
 unlet! b:current_syntax
+" [TODO]( fix syntax overlap: Project & Context ) @zhaocai @start(2012-01-04 00:21)
 
 " Set the currently loaded syntax mode.
 let b:current_syntax = 'notes'

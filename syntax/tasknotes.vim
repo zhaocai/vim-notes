@@ -31,14 +31,14 @@ syn match tasknotesDone /\w.*\%(@[Dd]one\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{
 syn match tasknotesCancelled /\w.*\%(@[Cc]ance[l]\{1,2}ed\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⌇ contains=tasknotesContextText
 
 
-syn sync fromstart
+" syn sync fromstart
 
 HiLink tasknotesProject         Title
 HiLink tasknotesContext         Underlined
 HiLink tasknotesContextProperty Identifier
 HiLink tasknotesTask            String
 HiLink tasknotesTaskDelimiter   SpecialChar
-HiLink tasknotesDone            Conceal
+HiLink tasknotesDone            Comment
 HiLink tasknotesCancelled       Ignore
 HiLink tasknotesDelimiter       Delimiter
 
