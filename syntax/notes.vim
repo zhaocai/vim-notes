@@ -154,6 +154,9 @@ highlight def link notesLastEdited LineNr
 
 " }}}1
 
+runtime! syntax/tasknotes.vim
+unlet! b:current_syntax
+
 " Set the currently loaded syntax mode.
 let b:current_syntax = 'notes'
 

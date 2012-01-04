@@ -9,6 +9,7 @@ else
   let b:did_ftplugin = 1
 endif
 
+
 " Copy indent from previous line. {{{1
 setlocal autoindent
 let b:undo_ftplugin = 'set autoindent<'
@@ -126,6 +127,33 @@ let b:undo_ftplugin .= ' | execute "vunmap <buffer> <Leader>sn"'
 vmap <buffer> <silent> <Leader>tn :TabNoteFromSelectedText<CR>
 let b:undo_ftplugin .= ' | execute "vunmap <buffer> <Leader>tn"'
 
+" }}}1
+
+" keyword for context. {{{1
+setlocal iskeyword+=@-@
+let b:undo_ftplugin .= ' | set iskeyword<'
+
+" tasknotes date format . {{{1
+if !exists('g:tasknotes_date_format')
+  let g:tasknotes_date_format = "%Y-%m-%d"
+endif
+" }}}1
+
+" tasknotes default key mappings . {{{1
+nmap <buffer> <silent> <Leader>td <Plug>tasknotes_toggle_done
+let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>td"'
+
+nmap <buffer> <silent> <Leader>tx <Plug>tasknotes_toggle_cancelled
+let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>tx"'
+
+nmap <buffer> <silent> <Leader>tc <Plug>tasknotes_show_context
+let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>tc"'
+
+nmap <buffer> <silent> <Leader>ta <Plug>tasknotes_show_all
+let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>ta"'
+
+nmap <buffer> <silent> <Leader>tp <Plug>tasknotes_fold_all_projects
+let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>tp"'
 " }}}1
 
 " This is currently the only place where a command is guaranteed to be
