@@ -1,0 +1,4 @@
+vim	Vim-notes-TaskPaper
+start(2012-01-04	Vim Strikethrough Text
+todo	Vim-notes-TaskPaper
+zhaocai	Vim Strikethrough Text
