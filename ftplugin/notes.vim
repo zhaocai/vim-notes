@@ -31,7 +31,7 @@ let b:undo_ftplugin .= ' | set foldmethod< foldexpr< foldtext<'
 
 " Enable concealing of notes syntax markers? {{{1
 if has('conceal')
-  setlocal conceallevel=3
+  setlocal conceallevel=2
   let b:undo_ftplugin .= ' | set conceallevel<'
 endif
 
@@ -149,7 +149,7 @@ if !exists('g:tasknotes_no_default_mapping') || g:tasknotes_no_default_mapping =
   nmap <buffer> <silent> <Leader>tx <Plug>tasknotes_toggle_cancelled
   let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>tx"'
 
-  nmap <buffer> <silent> <Leader>tc <Plug>tasknotes_show_context
+  nmap <buffer> <silent> <Leader>tc <Plug>tasknotes_focus_context
   let b:undo_ftplugin .= ' | execute "nunmap <buffer> <Leader>tc"'
 
   nmap <buffer> <silent> <Leader>ta <Plug>tasknotes_show_all

@@ -1,13 +1,13 @@
 
 
 "show tasks from context under the cursor
-fun! tasknotes#show_context()"                                            [[[1
+fun! tasknotes#focus_context()"                                            [[[1
     let s:wordUnderCursor = expand("<cword>")
     if(s:wordUnderCursor =~ "@\k*")
         let @/ = "\\<".s:wordUnderCursor."\\>"
 
 
-        let b:undo_show_context = zlib#rc#set_undo( ['foldexpr' , 'foldmethod', 'foldlevel',
+        let b:undo_focus_context = zlib#rc#set_undo( ['foldexpr' , 'foldmethod', 'foldlevel',
                         \ 'foldcolumn', 'foldminlines' , 'conceallevel'
                     \ ])
         setlocal foldexpr=(getline(v:lnum)=~@/)?0:1
@@ -17,11 +17,11 @@ fun! tasknotes#show_context()"                                            [[[1
     else
         echo "'" s:wordUnderCursor "' is not a context."
     endif
-    silent! call repeat#set("\<Plug>tasknotes_show_context")
+    silent! call repeat#set("\<Plug>tasknotes_focus_context")
 endf
 
 fun! tasknotes#show_all()"                                                [[[1
-    call zlib#rc#undo('b:undo_show_context')
+    call zlib#rc#undo('b:undo_focus_context')
     silent! %foldopen!
     setlocal nofoldenable
 
@@ -29,7 +29,7 @@ fun! tasknotes#show_all()"                                                [[[1
 endf
 
 fun! tasknotes#fold_all_projects()"                                       [[[1
-    call zlib#rc#undo('b:undo_show_context')
+    call zlib#rc#undo('b:undo_focus_context')
     setlocal foldenable
     silent! %foldclose!
 
@@ -74,5 +74,5 @@ endf
 
 
 
-">=< Modeline [[[1 ===========================================================
+"▲ Modeline ◀ [[[1 ===========================================================
 " vim: set ft=vim ts=4 sw=4 tw=78 fmr=[[[,]]] fdm=marker fdl=1 :

@@ -903,11 +903,13 @@ function! xolox#notes#indent_list(direction, line1, line2) " {{{3
     call setline(a:line1, indentstr)
   else
     " Regex to match a leading bullet.
-    let leading_bullet = xolox#notes#leading_bullet_pattern()
+    let leading_bullet_pattern = xolox#notes#leading_bullet_pattern()
+
     for lnum in range(a:line1, a:line2)
       let line = getline(lnum)
+      let leading_bullet = matchstr(line,leading_bullet_pattern)
       " Calculate new nesting level, should not result in < 0.
-      let level = max([0, xolox#notes#get_list_level(line) + a:direction])
+      let level = max([0, index(g:notes_list_bullets,leading_bullet) + a:direction])
       if a:direction == 1
         " Indent the line.
         let line = indentstr . line
@@ -917,7 +919,7 @@ function! xolox#notes#indent_list(direction, line1, line2) " {{{3
       endif
       " Replace the bullet.
       let bullet = g:notes_list_bullets[level % len(g:notes_list_bullets)]
-      call setline(lnum, substitute(line, leading_bullet, xolox#misc#escape#substitute(bullet), ''))
+      call setline(lnum, substitute(line, leading_bullet_pattern, xolox#misc#escape#substitute(bullet), ''))
     endfor
     " Regex to match a trailing bullet.
     if getline('.') =~ xolox#notes#trailing_bullet_pattern()
@@ -951,11 +953,13 @@ function! xolox#notes#get_comments_option()
 endfunction
 
 function! xolox#notes#get_list_level(line)
-  " Get the nesting level of the list item on the given line. This will only
-  " work with the list item indentation style expected by the notes plug-in
-  " (that is, top level list items are indented with one space, each nested
-  " level below that is indented by pairs of three spaces).
-  return (len(matchstr(a:line, '^\s*')) - 1) / 3
+  " Expect to use <Tab> indentation
+  if &expandtab
+    let level_whitespace_len = &tabstop
+  else
+    let level_whitespace_len = 1 " \t
+  endif
+  return len(matchstr(a:line, '^\s*')) / level_whitespace_len
 endfunction
 
 function! xolox#notes#cleanup_list() " {{{3
