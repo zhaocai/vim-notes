@@ -80,11 +80,12 @@ endif
 " Convert ASCII list bullets to Unicode bullets. {{{1
 if g:notes_smart_quotes
   imap <buffer> <expr> * xolox#notes#insert_bullet('*')
-  imap <buffer> <expr> - xolox#notes#insert_bullet('-')
   imap <buffer> <expr> + xolox#notes#insert_bullet('+')
   let b:undo_ftplugin .= ' | execute "iunmap <buffer> *"'
-  let b:undo_ftplugin .= ' | execute "iunmap <buffer> -"'
   let b:undo_ftplugin .= ' | execute "iunmap <buffer> +"'
+  " '-' is special for taskpaper task leading bullet
+  " imap <buffer> <expr> - xolox#notes#insert_bullet('-')
+  " let b:undo_ftplugin .= ' | execute "iunmap <buffer> -"'
 endif
 
 " Format three asterisks as a horizontal ruler. {{{1

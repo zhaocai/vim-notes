@@ -153,10 +153,9 @@ highlight def link notesModeLine LineNr
 syntax match notesLastEdited /(last edited \(today\|yesterday\|\w\+, \w\+ \d\+, \d\+\))/
 highlight def link notesLastEdited LineNr
 
-" }}}1
 
-" [TODO]( remove syntax overlap: Project & Context ) @zhaocai @start(2012-01-04 00:21)
 " tasknotes syntax                                                        {{{1
+" [TODO]( remove syntax overlap: Project & Context ) @zhaocai @start(2012-01-04 00:21)
 syn region tasknotesProject matchgroup=tasknotesProject start=/^\t*\%(\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{-}$/ oneline contains=tasknotesContextText,@notesInline
 
 syn region tasknotesProjectFold start=/^\t*\%(\u[^:]\+\)/ end=/\_^\s*\_$/ transparent fold
@@ -189,7 +188,6 @@ highlight def link tasknotesDelimiter       Delimiter
 highlight tasknotesWaiting gui=italic cterm=italic
 highlight tasknotesToday   guifg=hotpink ctermfg=red
 
-" }}}1
 
 " Set the currently loaded syntax mode.
 let b:current_syntax = 'notes'
