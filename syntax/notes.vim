@@ -51,7 +51,7 @@ highlight def link notesDoubleQuoted String
 " Highlight text emphasized in italic font. {{{2
 if has('conceal')
   syntax region notesItalic matchgroup=notesItalicMarker start=/\<_\k\@=/ end=/_\>\|\n/ contains=@Spell concealends
-  highlight link notesItalicMarker notesHiddenMarker 
+  highlight link notesItalicMarker notesHiddenMarker
 else
   syntax match notesItalic /\<_\k[^_]*\k_\>/
 endif
@@ -61,7 +61,7 @@ highlight notesItalic gui=italic
 " Highlight text emphasized in bold font. {{{2
 if has('conceal')
   syntax region notesBold matchgroup=notesBoldMarker start=/\*\k\@=/ end=/\k\@<=\*/ contains=@Spell concealends
-  highlight link notesBoldMarker notesHiddenMarker 
+  highlight link notesBoldMarker notesHiddenMarker
 else
   syntax match notesBold /\*\k[^*]*\k\*/
 endif
@@ -154,9 +154,36 @@ highlight def link notesLastEdited LineNr
 
 " }}}1
 
-runtime! syntax/tasknotes.vim
-unlet! b:current_syntax
 " [TODO]( fix syntax overlap: Project & Context ) @zhaocai @start(2012-01-04 00:21)
+" tasknotes syntax {{{1
+syn region tasknotesProject matchgroup=tasknotesProject start=/^\t*\%(\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{-}$/ oneline contains=tasknotesContextText,@notesInline
+
+syn region tasknotesProjectFold start=/\_^\t*\%(.\+:\)/ end=/\_^\s*\_$/ transparent fold
+
+syn region tasknotesContextText start=/\s\+@/ end=/\%(\w\+\%((.*)\)\=\)\_s/ transparent oneline contained containedin=tasknotesProject,tasknotesTask contains=tasknotesContext,tasknotesContextProperty,@notesInline
+syn region tasknotesContext matchgroup=tasknotesDelimiter start=/@\%(\w\+\)\@=/ end=/\%(\_s\|(\)\@=/  contained oneline containedin=tasknotesContextText
+syn region tasknotesContextProperty matchgroup=tasknotesDelimiter start="(" end=")" contained containedin=tasknotesContextText
+
+syn region tasknotesTask matchgroup=tasknotesTaskDelimiter start=/^\%(\t\+\)[-+]\%(\s\+\)/ end=/\s*$/ oneline keepend contains=tasknotesDone,tasknotesCancelled,tasknotesContextText,@notesInline
+syn match tasknotesDone /\w.*\%(@[Dd]one\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⚡ contains=tasknotesContextText
+syn match tasknotesCancelled /\w.*\%(@[Cc]ance[l]\{1,2}ed\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⌇ contains=tasknotesContextText
+syn match tasknotesToday /\w.*\%(@[Tt]oday\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask contains=tasknotesContextText
+
+
+" syn sync fromstart
+
+highlight def link tasknotesProject         Title
+highlight def link tasknotesContext         Underlined
+highlight def link tasknotesContextProperty Identifier
+highlight def link tasknotesTask            String
+highlight def link tasknotesTaskDelimiter   SpecialChar
+highlight def link tasknotesDone            Comment
+highlight def link tasknotesCancelled       Ignore
+highlight def link tasknotesDelimiter       Delimiter
+
+highlight tasknotesToday   guifg=hotpink ctermfg=red
+
+" }}}1
 
 " Set the currently loaded syntax mode.
 let b:current_syntax = 'notes'
