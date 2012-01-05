@@ -13,8 +13,8 @@ endif
 
 "=============================================================================
 ">> Public Interface:                                                     [[[1
-noremap <unique> <Plug>tasknotes_toggle_done       :call tasknotes#toggle_context('done',{'attach_date' : 1 })<CR>
-noremap <unique> <Plug>tasknotes_toggle_cancelled  :call tasknotes#toggle_context('cancelled',{'attach_date' : 1 })<CR>
+noremap <unique> <Plug>tasknotes_toggle_done       :call tasknotes#toggle_context('done',{'attach_date' : 1, 'remove_today_context' : 1 })<CR>
+noremap <unique> <Plug>tasknotes_toggle_cancelled  :call tasknotes#toggle_context('cancelled',{'attach_date' : 1 , 'remove_today_context' : 1})<CR>
 noremap <unique> <Plug>tasknotes_toggle_today      :call tasknotes#toggle_context('today',{'attach_date' : 0 })<CR>
 noremap <unique> <Plug>tasknotes_show_context      :call tasknotes#show_context()<CR>
 noremap <unique> <Plug>tasknotes_show_all          :call tasknotes#show_all()<CR>

@@ -11,8 +11,8 @@ endif
 
 
 " Copy indent from previous line. {{{1
-setlocal autoindent
-let b:undo_ftplugin = 'set autoindent<'
+setlocal autoindent wrap
+let b:undo_ftplugin = 'set autoindent< wrap<'
 
 " Set &tabstop and &shiftwidth options for bulleted lists. {{{1
 setlocal tabstop=3 shiftwidth=3 noexpandtab smarttab
