@@ -11,6 +11,9 @@ if exists('b:current_syntax')
   finish
 endif
 
+runtime! syntax/markdown.vim
+unlet! b:current_syntax
+
 " Check for spelling errors in all text.
 syntax spell toplevel
 
@@ -158,16 +161,18 @@ highlight def link notesLastEdited LineNr
 " tasknotes syntax {{{1
 syn region tasknotesProject matchgroup=tasknotesProject start=/^\t*\%(\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{-}$/ oneline contains=tasknotesContextText,@notesInline
 
-syn region tasknotesProjectFold start=/\_^\t*\%(.\+:\)/ end=/\_^\s*\_$/ transparent fold
+syn region tasknotesProjectFold start=/^\t*\%(\u[^:]\+\)/ end=/\_^\s*\_$/ transparent fold
 
 syn region tasknotesContextText start=/\s\+@/ end=/\%(\w\+\%((.*)\)\=\)\_s/ transparent oneline contained containedin=tasknotesProject,tasknotesTask contains=tasknotesContext,tasknotesContextProperty,@notesInline
 syn region tasknotesContext matchgroup=tasknotesDelimiter start=/@\%(\w\+\)\@=/ end=/\%(\_s\|(\)\@=/  contained oneline containedin=tasknotesContextText
 syn region tasknotesContextProperty matchgroup=tasknotesDelimiter start="(" end=")" contained containedin=tasknotesContextText
 
 syn region tasknotesTask matchgroup=tasknotesTaskDelimiter start=/^\%(\t\+\)[-+]\%(\s\+\)/ end=/\s*$/ oneline keepend contains=tasknotesDone,tasknotesCancelled,tasknotesContextText,@notesInline
-syn match tasknotesDone /\w.*\%(@[Dd]one\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⚡ contains=tasknotesContextText
-syn match tasknotesCancelled /\w.*\%(@[Cc]ance[l]\{1,2}ed\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⌇ contains=tasknotesContextText
+
+" Today has lower priority
 syn match tasknotesToday /\w.*\%(@[Tt]oday\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask contains=tasknotesContextText
+syn match tasknotesCancelled /\w.*\%(@[Cc]ance[l]\{1,2}ed\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⌇ contains=tasknotesContextText
+syn match tasknotesDone /\w.*\%(@[Dd]one\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask conceal cchar=⚡ contains=tasknotesContextText
 
 
 " syn sync fromstart

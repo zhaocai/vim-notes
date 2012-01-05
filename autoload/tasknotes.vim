@@ -34,52 +34,36 @@ fun! tasknotes#fold_all_projects()"                                       [[[1
     silent! call repeat#set("\<Plug>tasknotes_fold_all_projects")
 endf
 
-" toggle @done context tag on a task
-fun! tasknotes#toggle_done()"                                             [[[1
+fun! tasknotes#toggle_context(context,...)"                               [[[1
+" toggle context like done cancelled ...
+    let opt =  a:0 >= 1 && type(a:1) == type({})  ?  a:1  :  {}
+    let is_attach_date = get(opt, 'attach_date', 0)
+    let context = '@' . a:context
 
     let line = getline(".")
     if (line =~ '^\t*- ')
         let repl = line
-        if (line =~ '@done')
-            let repl = substitute(line, "@done\(.*\)", "", "g")
-            if &verbose > 1 | echo "undone!" | endif
+
+        if (line =~ context )
+            let repl = substitute(line, context . '\(.*\)', "", "g")
+            if &verbose > 1 | echo "undo " . context . "!" | endif
         else
-            let today = strftime(g:tasknotes_date_format, localtime())
-            let done_str = " @done(" . today . ")"
-            let repl = substitute(line, "$", done_str, "g")
-            if &verbose > 1 | echo "done!" | endif
+            if is_attach_date
+                let today = strftime(g:tasknotes_date_format, localtime())
+                let context_str = " " . context . "(" . today . ")"
+            else
+                let context_str = " " . context
+            endif
+            let repl = substitute(line, "$", context_str, "g")
+            if &verbose > 1 | echo context . "!" | endif
         endif
         call setline(".", repl)
     else
         echo "not a task."
     endif
 
-    silent! call repeat#set("\<Plug>tasknotes_toggle_done")
+    exec 'silent! call repeat#set("\<Plug>tasknotes_toggle_' . a:context . '")'
 endf
-
-" toggle @cancelled context tag on a task
-fun! tasknotes#toggle_cancelled()"                                        [[[1
-
-    let line = getline(".")
-    if (line =~ '^\t*- ')
-        let repl = line
-        if (line =~ '@cancelled')
-            let repl = substitute(line, "@cancelled\(.*\)", "", "g")
-            echo "uncancelled!"
-        else
-            let today = strftime(g:tasknotes_date_format, localtime())
-            let cancelled_str = " @cancelled(" . today . ")"
-            let repl = substitute(line, "$", cancelled_str, "g")
-            echo "cancelled!"
-        endif
-        call setline(".", repl)
-    else
-        echo "not a task."
-    endif
-
-    silent! call repeat#set("\<Plug>tasknotes_toggle_cancelled")
-endf
-
 
 
 
