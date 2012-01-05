@@ -44,7 +44,7 @@ fun! tasknotes#toggle_context(context,...)"                               [[[1
     let context = '@' . a:context
 
     let line = getline(".")
-    let context_prefix = line =~# '\s*$' ? '' : ' '
+    let context_prefix = line =~# '\s\+$' ? '' : ' '
     if (line =~ '^\t*- ')
         let repl = line
 

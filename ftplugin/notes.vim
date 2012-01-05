@@ -92,17 +92,18 @@ inoremap <buffer> *** <C-o>:call xolox#notes#insert_ruler()<CR>
 let b:undo_ftplugin .= ' | execute "iunmap <buffer> ***"'
 
 " Indent list items using <Tab> and <Shift-Tab>. {{{1
-if !exists('g:notes_imap_tab_disable')
+if !exists('g:notes_tab_mapping_disable') || g:notes_tab_mapping_disable == 0
   imap <buffer> <silent> <Tab> <C-o>:call xolox#notes#indent_list(1, line('.'), line('.'))<CR>
   let b:undo_ftplugin .= ' | execute "iunmap <buffer> <Tab>"'
   imap <buffer> <silent> <S-Tab> <C-o>:call xolox#notes#indent_list(-1, line('.'), line('.'))<CR>
   let b:undo_ftplugin .= ' | execute "iunmap <buffer> <S-Tab>"'
+
+  smap <buffer> <silent> <Tab> <C-o>:<C-u>call xolox#notes#indent_list(1, line("'<"), line("'>"))<CR><C-o>gv
+  let b:undo_ftplugin .= ' | execute "sunmap <buffer> <Tab>"'
+  smap <buffer> <silent> <S-Tab> <C-o>:<C-u>call xolox#notes#indent_list(-1, line("'<"), line("'>"))<CR><C-o>gv
+  let b:undo_ftplugin .= ' | execute "sunmap <buffer> <S-Tab>"'
 endif
 
-smap <buffer> <silent> <Tab> <C-o>:<C-u>call xolox#notes#indent_list(1, line("'<"), line("'>"))<CR><C-o>gv
-let b:undo_ftplugin .= ' | execute "sunmap <buffer> <Tab>"'
-smap <buffer> <silent> <S-Tab> <C-o>:<C-u>call xolox#notes#indent_list(-1, line("'<"), line("'>"))<CR><C-o>gv
-let b:undo_ftplugin .= ' | execute "sunmap <buffer> <S-Tab>"'
 
 " Indent list items using <Alt-Left> and <Alt-Right>. {{{1
 imap <buffer> <silent> <A-Right> <C-o>:call xolox#notes#indent_list(1, line('.'), line('.'))<CR>
