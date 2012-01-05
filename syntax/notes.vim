@@ -36,8 +36,7 @@ hi def link notesHiddenMarker Ignore
 " Highlight note names as hyperlinks.                                     [[[2
 call xolox#notes#highlight_names(1)
 syntax cluster notesInline add=notesName
-hi def link notesName Underlined
-
+hi notesName gui=underline guifg=aquamarine2
 
 " Highlight Numbered list                                                 [[[2
 syntax match notesListNumber /^\s*\zs\d\+[[:punct:]]\?\ze\s/
@@ -122,7 +121,7 @@ hi def link notesVimCmd Special
 
 " The first line of each note contains the title.                         [[[2
 syntax match notesTitle /^.*\%1l.*$/ contains=@notesInline
-hi def link notesTitle ModeMsg
+hi notesTitle gui=bold guifg=aquamarine2
 
 " Short sentences ending in a colon are considered headings.              [[[2
 syntax match notesShortHeading /^\s*\zs\u.\{1,50}\k:\ze\(\s\|$\)/ contains=@notesInline
