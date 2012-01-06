@@ -92,7 +92,7 @@ function! xolox#notes#tags#scan_note(title, text) " {{{1
     " Match words that start with @ and don't contain { (BibTeX entries).
     if token =~ '^@\w' && token !~ '{'
       " Strip any trailing punctuation.
-      let token = substitute(token[1:], '[[:punct:]].*$', '', '')
+      let token = substitute(token[1:], '\W.*$', '', '')
       if token != ''
         if !has_key(s:currently_tagged_notes, token)
           let s:currently_tagged_notes[token] = [a:title]

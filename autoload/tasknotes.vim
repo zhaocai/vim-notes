@@ -45,7 +45,7 @@ fun! tasknotes#toggle_context(context,...)"                               [[[1
 
     let line = getline(".")
     let context_prefix = line =~# '\s\+$' ? '' : ' '
-    if (line =~ '^\t*- ')
+    if (line =~ '^\t*[' . join(g:notes_list_bullets,'') . '] ')
         let repl = line
 
         if (line =~ context )

@@ -123,9 +123,6 @@ hi def link notesVimCmd Special
 syntax match notesTitle /^.*\%1l.*$/ contains=@notesInline
 hi notesTitle gui=bold guifg=aquamarine2
 
-" Short sentences ending in a colon are considered headings.              [[[2
-syntax match notesShortHeading /^\s*\zs\u.\{1,50}\k:\ze\(\s\|$\)/ contains=@notesInline
-hi def link notesShortHeading Title
 
 
 " E-mail style block quotes are highlighted as comments.                  [[[2
@@ -136,7 +133,7 @@ hi def link notesBlockQuote Comment
 syntax match notesRule /\(^\s\+\)\zs\*\s\*\s\*$/
 hi def link notesRule Comment
 
-" Highlight embedded blocks of source code, logfilemessages,basicallyanythingVimcanhighlight.[[[2
+" Highlight embedded blocksofsourcecode,logfilemessages,basicallyanythingVimcanhighlight.[[[2
 " NB: I've escaped these markers so that Vim doesn't interpret them when editing this file…
 syntax match notesCodeStart /{{[{]\w*/
 syntax match notesCodeEnd /}}[}]/
@@ -153,14 +150,18 @@ syntax match notesLastEdited /(last edited \(today\|yesterday\|\w\+, \w\+ \d\+, 
 hi def link notesLastEdited LineNr
 
 
-"▶ TaskNotes Syntax ▼  [[[1 =======================================================
+"▶ TaskNotes Syntax ▼  [[[1 ==================================================
 "
-" Atx style headings are supported.                                       [[[2
-syn region tasknotesProjectH1 start=/^\%(#\{0,6}\s*\)\%(\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline keepend contains=tasknotesContextText,@notesInline,tasknotesAtxMarker
-syn region tasknotesProjectH2 start=/^\%(\t\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
-syn region tasknotesProjectH3 start=/^\%(\t\t\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
+" Tasknotes Projects ( Atx style headings are supported )                 [[[2
+syn region tasknotesProjectH1 start=/^\%(#\{1,6}[[:space:]]\|\)\%(\u[^:]\+\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline keepend contains=tasknotesContextText,@notesInline,tasknotesAtxMarker
+syn region tasknotesProjectH2 start=/^\%(\t\{1}[0-9A-Z][^:]\{1,50}\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
+syn region tasknotesProjectH3 start=/^\%(\t\{2}[0-9A-Z][^:]\{1,50}\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
+syn region tasknotesProjectH4 start=/^\%(\t\{3}[0-9A-Z][^:]\{1,50}\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
+syn region tasknotesProjectH5 start=/^\%(\t\{4}[0-9A-Z][^:]\{1,50}\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
+syn region tasknotesProjectH6 start=/^\%(\t\{5}[0-9A-Z][^:]\{1,50}\)/ end=/:\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ oneline contains=tasknotesContextText,@notesInline
 
-syn region tasknotesProjectFold start=/^\t*\%(\u[^:]\+\)/ end=/\_^\s*\_$/ transparent fold
+" syn region tasknotesProjectFold start=/^\%(\t{1,5}\|#\{1,6}[[:space:]]\|\)\%([0-9A-Z][^:]\{1,50}:\)/ end=/\_^\s*\_$/ transparent fold
+" use expr foldmethod instead
 
 " Conceal Leading '#'
 if s:tasknotes_conceal =~# 'a'
@@ -169,7 +170,7 @@ else
   syntax match tasknotesAtxMarker /^#\+/ contained containedin=tasknotesProjectH1
 endif
 
-" Highlight @context(.*)                                                  [[[2
+" Tasknotes @context(.*)                                                  [[[2
 syn region tasknotesContextText start=/\s\+@/ end=/\%(\w\+\%((.*)\)\=\)\_s/ transparent oneline contained containedin=tasknotesProject,tasknotesTask contains=tasknotesContext,tasknotesContextProperty,@notesInline
 syn region tasknotesContext matchgroup=tasknotesDelimiter start=/@\%(\w\+\)\@=/ end=/\%(\_s\|(\)\@=/  contained oneline containedin=tasknotesContextText
 syn region tasknotesContextProperty matchgroup=tasknotesDelimiter start="(" end=")" contained containedin=tasknotesContextText
@@ -177,6 +178,8 @@ syn region tasknotesContextProperty matchgroup=tasknotesDelimiter start="(" end=
 " All bullets lists are Highlighted as Task. Only '-' counts in TaskPaper
 execute 'syn region tasknotesTask matchgroup=tasknotesTaskDelimiter start=/^\%(\t*\)[' . join(g:notes_list_bullets,'') . ']\%(\s\+\)/ end=/\s*$/ oneline keepend contains=tasknotesDone,tasknotesCancelled,tasknotesContextText,@notesInline'
 
+
+" Tasknotes Tasks                                                         [[[2
 
 " Today has loweest priority
 syn match tasknotesToday /\w.*\%(@[Tt]oday\%((.*)\)\=\)\%(\s\+@\w\+\%((.*)\)\=\)\{}$/ contained containedin=tasknotesTask contains=tasknotesContextText
@@ -197,7 +200,7 @@ else
   syn region tasknotesIdDeclaration matchgroup=tasknotesLinkDelimiter start="^ \{0,3\}!\=\[" end="\]:" oneline keepend nextgroup=tasknotesUrl skipwhite
 endif
 
-" markdown style link.                                                    [[[2
+" TaskNotes markdown style links                                          [[[2
 syn match tasknotesUrl "\S\+" nextgroup=tasknotesUrlTitle skipwhite contained
 syn region tasknotesUrl matchgroup=tasknotesUrlDelimiter start="<" end=">" oneline keepend nextgroup=tasknotesUrlTitle skipwhite contained
 syn region tasknotesUrlTitle matchgroup=tasknotesUrlTitleDelimiter start=+"+ end=+"+ keepend contained
@@ -221,9 +224,13 @@ else
 endif
 
 
+"▶ Highlight Definition ▼  [[[1 ==============================================
 hi def link tasknotesProjectH1       htmlH1
 hi def link tasknotesProjectH2       htmlH2
 hi def link tasknotesProjectH3       htmlH3
+hi def link tasknotesProjectH4       htmlH4
+hi def link tasknotesProjectH5       htmlH5
+hi def link tasknotesProjectH6       htmlH6
 hi def link tasknotesAtxMarker       Comment
 
 hi def link tasknotesContext         Underlined
@@ -251,5 +258,5 @@ hi def link tasknotesUrlTitleDelimiter     Delimiter
 " Set the currently loaded syntax mode.
 let b:current_syntax = 'notes'
 
-"▲ Modeline ◀  [[[1 =========================================================
+"▲ Modeline ◀  [[[1 ==========================================================
 " vim: ts=2 sw=2 et bomb fmr=[[[,]]] fdm=marker fdl=1
